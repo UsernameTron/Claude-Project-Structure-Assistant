@@ -296,30 +296,30 @@ If a task requires modifying any of these, stop and ask.
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 
 ### Architecture
-- Zero-dependency vanilla HTML/CSS/JS SPA — no frameworks, no bundlers, no npm. This is by design.
-- Module contract: every view module exposes `init(container, panel)` and `destroy()` via `window.modules[id]`.
-- Lazy-load pattern: CSS and JS injected on demand per module in `ctg-intel-platform/js/app.js`.
-- Shared components live in `ctg-intel-platform/js/shared-components.js` — never duplicate utilities into view modules.
-- Data layer is `ctg-intel-platform/js/data.js` — all data modifications go through it. 7 view modules consume it.
-- Deployed to Netlify with no build step (`netlify.toml` publishes `.` directly).
+- This is a **documentation and agent ecosystem** — not an application. There is no app code, no build step, no runtime.
+- `subagent-lifecycle/` is a self-contained plugin with its own README, plugin.json manifest, agents, skills, templates, and docs. Treat it as a unit.
+- `.claude/agents/` contains symlinks to `subagent-lifecycle/agents/` (5 pipeline agents) plus one standalone file (`repo-doc-architect.md`).
+- `.claude/scripts/agent-health-check.sh` is a symlink to `subagent-lifecycle/scripts/`.
+- `docs/` holds ecosystem-level planning and specification documents.
+- `architecture.md` at root describes the full ecosystem structure and component inventory.
 
 ### Conventions
-- All JS files wrapped in IIFEs with `'use strict'`.
-- Module registration pattern: `window.modules = window.modules || {}; window.modules['module-id'] = { init, destroy };`
-- CSS uses custom properties (design tokens) defined in `ctg-intel-platform/css/obsidian.css`.
-- File naming: kebab-case matching module IDs (e.g., `command-center.js`, `command-center.css`).
-- No module system (import/export) — everything attaches to `window`.
+- File naming: kebab-case for all files (e.g., `memory-seeder.md`, `agent-health-check.sh`).
+- Agent definitions use YAML frontmatter: `name`, `description`, `tools`, `model`, etc. See `subagent-lifecycle/references/frontmatter-reference.md` for the schema.
+- Skills live in directories with a `SKILL.md` file (e.g., `skills/project-guide/SKILL.md`).
+- Templates are YAML files in `subagent-lifecycle/templates/`.
+- No npm, no package.json, no dependencies. This is a pure Markdown/YAML/Bash project.
 
 ### Testing
-- No test framework currently exists. No linting configured.
-- Verification is manual: visual QA against the live Netlify deployment.
-- Timer leak testing: rapid tab cycling between all 7 modules, confirm no orphaned intervals.
-- Before marking done, open `index.html` locally and navigate all 7 modules to confirm no console errors.
+- No automated test framework. Verification is structural.
+- Run `bash .claude/scripts/agent-health-check.sh` to validate agent frontmatter and memory file sizes.
+- After modifying agent files, verify frontmatter parses correctly (valid YAML between `---` fences).
+- After modifying symlinks, verify they resolve: `cat .claude/agents/<name>.md` should print content.
+- `plugin.json` and `architecture.md` must stay consistent — if components are added or removed, update both.
 
 ### Boundaries
-- Never modify `netlify.toml` without explicit approval — it is the production deployment config.
-- Never add npm dependencies — this is a zero-dependency project by design.
-- Never modify `js/data.js` structure without checking all 7 consuming view modules.
-- Never modify `js/shared-components.js` without checking all consuming view modules.
-- `css/obsidian.css` contains design tokens — changes cascade to every module. Check all CSS files before editing.
+- Never edit files through symlinks in `.claude/agents/` — edit the source in `subagent-lifecycle/agents/` instead.
+- Never modify `subagent-lifecycle/plugin.json` without updating `architecture.md` (and vice versa).
+- Never add files directly to `subagent-lifecycle/` without updating the plugin.json component registry.
 - Never commit `.DS_Store` files.
+- `dist/` is gitignored — do not commit build artifacts.
