@@ -1,0 +1,9 @@
+# OS
+.DS_Store
+
+# Build artifacts
+dist/
+
+# Claude Code local settings
+.claude/settings.local.json
+.claude/agent-memory/
