@@ -27,7 +27,7 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Reference docs | 3 | Injected knowledge for agent design decisions |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
 | Hooks/Scripts | 1 | Automatic health monitoring on subagent completion |
-| Planning docs | 2 | Architecture improvement plans (v3.0, v3.1) |
+| Planning docs | 2 | Architecture improvement plans and deployment specs |
 | Governance | 1 | CLAUDE.md agent operating system |
 | Meta-agents | 1 | repo-doc-architect for documentation generation |
 
@@ -38,17 +38,39 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 ```
 Claude MCP Ecosystem/
 │
+├── .gitignore                             # OS files, dist/, local settings
+├── README.md                              # Ecosystem overview & quick start
 ├── CLAUDE.md                              # Agent governance & operating rules
-├── repo-doc-architect.md                  # Documentation generation subagent
-├── subagent-suite-improvement-plan-v3.md  # Architecture plan v3.0
-├── subagent-suite-improvement-plan-v3.1.md # Architecture plan v3.1
-├── subagent-lifecycle.tar.gz              # Distribution archive
+├── architecture.md                        # Full component inventory & directory map
 │
-└── subagent-lifecycle/                    # Core plugin
-    ├── README.md                          # Project overview & install guide
+├── docs/                                  # Ecosystem-level planning documents
+│   ├── Claude_AI_Ecosystem_Deployment_Spec_v2_1.md
+│   └── subagent-suite-improvement-plan-v3.md
+│
+├── .claude/
+│   ├── agents/                            # Active agent definitions
+│   │   ├── architect.md      → symlink    #   → subagent-lifecycle/agents/
+│   │   ├── auditor.md        → symlink    #   → subagent-lifecycle/agents/
+│   │   ├── memory-seeder.md  → symlink    #   → subagent-lifecycle/agents/
+│   │   ├── scaffolder.md     → symlink    #   → subagent-lifecycle/agents/
+│   │   ├── validator.md      → symlink    #   → subagent-lifecycle/agents/
+│   │   └── repo-doc-architect.md          #   Standalone meta-agent (regular file)
+│   ├── scripts/
+│   │   └── agent-health-check.sh → symlink #  → subagent-lifecycle/scripts/
+│   └── settings.json                      # Claude Code project settings
+│
+├── tasks/                                 # Governance task tracking
+│   ├── todo.md                            #   Current task plan
+│   └── lessons.md                         #   Accumulated correction rules
+│
+├── dist/                                  # Build artifacts (gitignored)
+│   └── subagent-lifecycle.tar.gz
+│
+└── subagent-lifecycle/                    # Core plugin (self-contained)
+    ├── README.md                          # Plugin overview & install guide
     ├── plugin.json                        # Plugin manifest & component registry
     │
-    ├── agents/                            # Layer 2 — Worker subagents
+    ├── agents/                            # Layer 2 — Worker subagents (source of truth)
     │   ├── architect.md                   #   Design: project analysis → agent specs
     │   ├── auditor.md                     #   Diagnose: ecosystem health checks
     │   ├── memory-seeder.md               #   Seed: populate agent memory files
@@ -92,25 +114,33 @@ Claude MCP Ecosystem/
 ### `CLAUDE.md`
 - **Type:** Agent governance document
 - **Purpose:** Operating system for Claude Code sessions. Defines session initialization sequence, workflow rules (plan before building, use subagents, learn from corrections, prove it works), autonomy decision tree, git workflow, rollback protocol, context window management, task lifecycle, and code standards.
-- **Project-specific rules:** Zero-dependency vanilla HTML/CSS/JS SPA architecture, IIFE module pattern, `window.modules` registration, kebab-case naming, Netlify deployment with no build step.
+- **Project-specific rules:** Agent/documentation ecosystem architecture, symlink boundaries, structural testing, plugin.json/architecture.md sync requirements.
 
-### `repo-doc-architect.md`
-- **Type:** Subagent definition (standalone, not inside `subagent-lifecycle/`)
-- **Model:** haiku
-- **Purpose:** Multi-phase documentation generation agent. Executes 5 phases: (1) Reconnaissance & planning, (2) Architecture documentation generation, (3) Analytics integration, (4) Validation & QA, (5) Consolidation & output. Produces `architecture.md` files, updates `Claude.md` with analytics, and generates validation reports.
+### `README.md`
+- **Type:** Project documentation
+- **Purpose:** Ecosystem overview, directory summary, quick start instructions, and links to deeper documentation.
 
-### `subagent-suite-improvement-plan-v3.md`
+### `architecture.md`
+- **Type:** Technical reference (this file)
+- **Purpose:** Full component inventory, directory structure map, and detailed descriptions of every file in the ecosystem.
+
+### `docs/Claude_AI_Ecosystem_Deployment_Spec_v2_1.md`
+- **Type:** Planning document
+- **Purpose:** Deployment specification for the Claude AI Ecosystem. Covers infrastructure, deployment targets, and operational requirements.
+
+### `docs/subagent-suite-improvement-plan-v3.md`
 - **Type:** Planning document
 - **Author:** Pete Connor
 - **Date:** 2026-03-03
 - **Purpose:** Architecture improvement plan v3.0. Establishes the three-layer skill/subagent architecture validated against Claude Code documentation. Defines the nesting constraint (subagents cannot spawn subagents), component layer assignments, and phased implementation rollout.
 
-### `subagent-suite-improvement-plan-v3.1.md`
-- **Type:** Planning document
-- **Purpose:** Byte-identical copy of v3.0 (MD5: `d542ee52f269b86c571bae722a93357b` matches both files). Likely a placeholder for a planned revision that was never differentiated. No actual delta from v3.0 exists.
+### `.claude/agents/repo-doc-architect.md`
+- **Type:** Subagent definition (standalone meta-agent, not part of the pipeline)
+- **Model:** haiku
+- **Purpose:** Multi-phase documentation generation agent. Executes 5 phases: (1) Reconnaissance & planning, (2) Architecture documentation generation, (3) Analytics integration, (4) Validation & QA, (5) Consolidation & output. Produces `architecture.md` files, updates `Claude.md` with analytics, and generates validation reports.
 
-### `subagent-lifecycle.tar.gz`
-- **Type:** Archive
+### `dist/subagent-lifecycle.tar.gz`
+- **Type:** Archive (gitignored)
 - **Purpose:** Compressed distribution package of the entire `subagent-lifecycle/` directory for portable installation.
 
 ---
@@ -333,15 +363,19 @@ LAYER 2 — WORKERS (subagents, isolated context)
 
 ## File Count Summary
 
-**Root level** (outside the plugin): 5 files
+**Root level** (outside the plugin): 4 regular files + 1 directory of docs
 
 | File | Type |
 |------|------|
-| CLAUDE.md | Governance |
-| repo-doc-architect.md | Subagent definition |
-| subagent-suite-improvement-plan-v3.md | Planning doc |
-| subagent-suite-improvement-plan-v3.1.md | Planning doc |
-| subagent-lifecycle.tar.gz | Archive |
+| `.gitignore` | Git configuration |
+| `README.md` | Project documentation |
+| `CLAUDE.md` | Governance |
+| `architecture.md` | Technical reference |
+| `docs/` (2 files) | Planning docs |
+| `tasks/` (2 files) | Governance tracking |
+| `.claude/agents/` (5 symlinks + 1 file) | Active agents |
+| `.claude/scripts/` (1 symlink) | Hooks |
+| `.claude/settings.json` | Project settings |
 
 **Plugin** (`subagent-lifecycle/`): 23 files across 10 directories
 
@@ -357,5 +391,3 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `skills/subagent-concierge/` | 1 |
 | `templates/` | 6 |
 | **Plugin total** | **23 files** |
-
-**Grand total: 28 files** (5 root + 23 plugin)
