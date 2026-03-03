@@ -1,0 +1,70 @@
+# API/Backend Template
+# For backend-only projects: APIs, microservices, serverless functions
+
+name: api-backend
+display_name: "API / Backend Service"
+description: "Backend API service with routes, database, authentication, and optional deployment"
+
+trigger_conditions:
+  - "building an API"
+  - "backend service"
+  - "microservice"
+  - "serverless"
+  - "REST API"
+  - "GraphQL API"
+
+file_signals:
+  extensions: [".py", ".rb", ".go", ".rs", ".java", ".ts"]
+  directories: ["/api", "/routes", "/endpoints", "/handlers", "/models", "/middleware"]
+  packages: ["express", "fastify", "flask", "fastapi", "django", "gin", "actix"]
+
+agents:
+  - name: api-builder
+    description: "Creates routes, endpoints, and request handlers"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "add endpoint"
+      - "create route"
+      - "handler"
+      - "middleware"
+      - "request"
+      - "response"
+
+  - name: data-layer
+    description: "Handles database schemas, queries, and migrations"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "database"
+      - "schema"
+      - "migration"
+      - "query"
+      - "model"
+      - "ORM"
+
+  - name: tester
+    description: "Writes and runs API tests"
+    model: haiku
+    tools: Read, Bash, Glob, Grep
+    disallowedTools: Write, Edit
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "test"
+      - "integration test"
+      - "API test"
+      - "coverage"
+
+parallel_groups:
+  - [api-builder, data-layer]
+
+demo_task:
+  agent: api-builder
+  task: "Add a health check endpoint at /health"
+  additive: true
+  estimated_seconds: 15

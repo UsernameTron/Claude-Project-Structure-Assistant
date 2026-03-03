@@ -1,0 +1,89 @@
+# Web Application Template
+# For full-stack web apps with frontend, backend, and optional testing/deployment
+
+name: web-app
+display_name: "Web Application"
+description: "Full-stack web application with frontend UI, backend API, and supporting infrastructure"
+
+trigger_conditions:
+  - "building a website"
+  - "web app"
+  - "frontend with backend"
+  - "full-stack"
+  - "react app with API"
+  - "next.js project"
+
+file_signals:
+  extensions: [".jsx", ".tsx", ".vue", ".svelte", ".css", ".scss", ".html"]
+  directories: ["/src", "/public", "/api", "/routes", "/pages", "/components"]
+  packages: ["react", "next", "vue", "angular", "svelte", "express", "fastify", "koa"]
+
+agents:
+  - name: frontend-dev
+    description: "Builds pages, components, and styles"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    skills_if_available: [frontend-design]
+    routing_triggers:
+      - "build UI"
+      - "make page"
+      - "style this"
+      - "frontend"
+      - "component"
+      - "layout"
+      - "CSS"
+
+  - name: api-builder
+    description: "Handles backend routes, database, and server logic"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "create API"
+      - "add endpoint"
+      - "database"
+      - "backend"
+      - "server"
+      - "middleware"
+      - "authentication"
+
+  - name: tester
+    description: "Catches bugs and validates integration"
+    model: haiku
+    tools: Read, Bash, Glob, Grep
+    disallowedTools: Write, Edit
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "test"
+      - "check bugs"
+      - "validate"
+      - "QA"
+      - "coverage"
+
+  - name: deployer
+    description: "Pushes to production and manages hosting"
+    model: sonnet
+    tools: Read, Write, Bash, Glob, Grep
+    memory: project
+    maxTurns: 15
+    mcps_if_configured: [Netlify]
+    routing_triggers:
+      - "deploy"
+      - "push live"
+      - "publish"
+      - "hosting"
+      - "CI/CD"
+      - "environment"
+
+parallel_groups:
+  - [frontend-dev, api-builder]
+
+demo_task:
+  agent: frontend-dev
+  task: "Add a footer component to the main page"
+  additive: true
+  estimated_seconds: 20

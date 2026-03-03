@@ -1,0 +1,71 @@
+# Data Dashboard Template
+# For data processing, analytics, and visualization projects
+
+name: data-dashboard
+display_name: "Data Dashboard"
+description: "Data processing and visualization project with ETL, analysis, and dashboard output"
+
+trigger_conditions:
+  - "data dashboard"
+  - "analytics project"
+  - "data pipeline"
+  - "visualization"
+  - "streamlit app"
+  - "data processing"
+
+file_signals:
+  extensions: [".csv", ".json", ".xlsx", ".parquet", ".ipynb"]
+  directories: ["/data", "/analytics", "/notebooks", "/reports", "/dashboards"]
+  packages: ["pandas", "numpy", "matplotlib", "plotly", "streamlit", "dash", "seaborn"]
+
+agents:
+  - name: data-engineer
+    description: "Handles data loading, cleaning, and transformation"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "load data"
+      - "clean data"
+      - "transform"
+      - "ETL"
+      - "parse CSV"
+      - "data pipeline"
+
+  - name: analyst
+    description: "Runs analysis, finds patterns, and generates insights"
+    model: sonnet
+    tools: Read, Write, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "analyze"
+      - "find patterns"
+      - "statistics"
+      - "correlation"
+      - "trend"
+      - "insight"
+
+  - name: visualizer
+    description: "Creates charts, dashboards, and visual reports"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "chart"
+      - "graph"
+      - "dashboard"
+      - "visualize"
+      - "plot"
+      - "report"
+
+parallel_groups:
+  - [data-engineer, visualizer]
+
+demo_task:
+  agent: analyst
+  task: "Summarize the patterns in the primary data file"
+  additive: true
+  estimated_seconds: 25

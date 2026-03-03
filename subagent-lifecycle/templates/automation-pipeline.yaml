@@ -1,0 +1,69 @@
+# Automation Pipeline Template
+# For workflow automation, CI/CD, data pipelines, and scheduled jobs
+
+name: automation-pipeline
+display_name: "Automation Pipeline"
+description: "Workflow automation with jobs, pipelines, scheduling, and monitoring"
+
+trigger_conditions:
+  - "automation"
+  - "workflow"
+  - "pipeline"
+  - "scheduled jobs"
+  - "CI/CD"
+  - "cron jobs"
+  - "n8n workflows"
+
+file_signals:
+  extensions: [".yaml", ".yml", ".toml"]
+  directories: ["/workflows", "/pipelines", "/jobs", "/cron", "/scripts", "/automation"]
+  packages: ["airflow", "prefect", "celery", "temporal", "dagster", "luigi"]
+
+agents:
+  - name: pipeline-builder
+    description: "Creates and modifies workflow definitions and job configurations"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "create workflow"
+      - "add job"
+      - "pipeline step"
+      - "automation"
+      - "schedule"
+
+  - name: integration-dev
+    description: "Handles connections to external services, APIs, and data sources"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "connect to"
+      - "API integration"
+      - "webhook"
+      - "external service"
+      - "data source"
+
+  - name: monitor
+    description: "Sets up logging, alerting, and pipeline health checks"
+    model: haiku
+    tools: Read, Write, Bash, Glob, Grep
+    memory: project
+    maxTurns: 15
+    routing_triggers:
+      - "monitoring"
+      - "alerting"
+      - "logging"
+      - "health check"
+      - "pipeline status"
+
+parallel_groups:
+  - [pipeline-builder, integration-dev]
+
+demo_task:
+  agent: pipeline-builder
+  task: "Map out the steps in the current workflow"
+  additive: true
+  estimated_seconds: 20

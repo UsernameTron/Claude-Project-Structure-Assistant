@@ -1,0 +1,73 @@
+# Content Site Template
+# For blogs, documentation sites, marketing sites, and content-heavy projects
+
+name: content-site
+display_name: "Content Site"
+description: "Content-focused website with articles, pages, and optional CMS integration"
+
+trigger_conditions:
+  - "blog"
+  - "documentation site"
+  - "content site"
+  - "marketing site"
+  - "static site"
+  - "Gatsby"
+  - "Hugo"
+  - "Astro"
+
+file_signals:
+  extensions: [".md", ".mdx", ".html"]
+  directories: ["/content", "/posts", "/blog", "/pages", "/docs", "/articles"]
+  packages: ["gatsby", "hugo", "eleventy", "astro", "docusaurus", "vitepress"]
+
+agents:
+  - name: content-writer
+    description: "Creates and edits articles, posts, and pages"
+    model: sonnet
+    tools: Read, Write, Edit, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "write post"
+      - "new article"
+      - "edit content"
+      - "blog post"
+      - "documentation"
+
+  - name: site-builder
+    description: "Handles layouts, templates, navigation, and site structure"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    skills_if_available: [frontend-design]
+    routing_triggers:
+      - "layout"
+      - "template"
+      - "navigation"
+      - "header"
+      - "footer"
+      - "theme"
+      - "style"
+
+  - name: seo-optimizer
+    description: "Optimizes metadata, structure, and content for search engines"
+    model: haiku
+    tools: Read, Write, Edit, Glob, Grep
+    memory: project
+    maxTurns: 15
+    routing_triggers:
+      - "SEO"
+      - "metadata"
+      - "sitemap"
+      - "search ranking"
+      - "meta tags"
+
+parallel_groups:
+  - [content-writer, site-builder]
+
+demo_task:
+  agent: content-writer
+  task: "Generate a new blog post template in the content directory"
+  additive: true
+  estimated_seconds: 15

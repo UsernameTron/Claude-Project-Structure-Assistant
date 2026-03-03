@@ -1,0 +1,85 @@
+{
+  "name": "subagent-lifecycle",
+  "version": "3.0.0",
+  "description": "Organize complex Claude Code projects with specialist agents. Works for beginners (automatic setup) and experts (full architecture control).",
+  "author": "Pete Connor",
+  "license": "MIT",
+  "homepage": "https://github.com/peteconnor/subagent-lifecycle",
+  "keywords": [
+    "subagents",
+    "agents",
+    "project-organization",
+    "vibecoding",
+    "claude-code",
+    "specialist-agents",
+    "workflow-automation"
+  ],
+  "claude_code": {
+    "min_version": "1.0.0",
+    "skills_dir": "skills/",
+    "agents_dir": "agents/"
+  },
+  "components": {
+    "skills": [
+      {
+        "name": "project-guide",
+        "path": "skills/project-guide/SKILL.md",
+        "layer": 0,
+        "role": "router"
+      },
+      {
+        "name": "subagent-concierge",
+        "path": "skills/subagent-concierge/SKILL.md",
+        "layer": 1,
+        "role": "setup-orchestrator"
+      },
+      {
+        "name": "subagent-companion",
+        "path": "skills/subagent-companion/SKILL.md",
+        "layer": 1,
+        "role": "management-orchestrator"
+      }
+    ],
+    "agents": [
+      {
+        "name": "architect",
+        "path": "agents/architect.md",
+        "layer": 2,
+        "role": "design"
+      },
+      {
+        "name": "scaffolder",
+        "path": "agents/scaffolder.md",
+        "layer": 2,
+        "role": "build"
+      },
+      {
+        "name": "memory-seeder",
+        "path": "agents/memory-seeder.md",
+        "layer": 2,
+        "role": "seed"
+      },
+      {
+        "name": "validator",
+        "path": "agents/validator.md",
+        "layer": 2,
+        "role": "verify"
+      },
+      {
+        "name": "auditor",
+        "path": "agents/auditor.md",
+        "layer": 2,
+        "role": "diagnose"
+      }
+    ],
+    "templates": 6,
+    "references": 3,
+    "hooks": 1,
+    "docs": 3
+  },
+  "installation": {
+    "skills_target": "~/.claude/skills/",
+    "agents_target": ".claude/agents/",
+    "hooks_target": ".claude/scripts/"
+  }
+}
