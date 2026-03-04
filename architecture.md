@@ -23,8 +23,8 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 |----------|-------|-------------|
 | Skills (Layer 0-1) | 3 | Routing and orchestration in main conversation context |
 | Subagents (Layer 2) | 5 | Isolated worker agents for pipeline execution |
-| Templates | 6 | Pre-configured ecosystem blueprints by project type |
-| Reference docs | 3 | Injected knowledge for agent design decisions |
+| Templates | 7 | Pre-configured ecosystem blueprints by project type |
+| Reference docs | 4 | Injected knowledge for agent design decisions (3 general + 1 ISPN directory) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
 | Hooks/Scripts | 1 | Automatic health monitoring on subagent completion |
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
@@ -85,7 +85,9 @@ Claude MCP Ecosystem/
     ├── references/                        # Injected knowledge (loaded by agents)
     │   ├── agent-design-patterns.md       #   7 reusable agent archetypes
     │   ├── frontmatter-reference.md       #   YAML frontmatter schema spec
-    │   └── mcp-catalog.md                 #   MCP server → capability mapping
+    │   ├── mcp-catalog.md                 #   MCP server → capability mapping
+    │   └── ispn/                          #   ISPN deployment reference files
+    │       └── env-context.md             #     AWS/EKS/RDS credentials (PENDING)
     │
     ├── scripts/                           # Automation hooks
     │   └── agent-health-check.sh          #   SubagentStop health monitor
@@ -103,6 +105,7 @@ Claude MCP Ecosystem/
         ├── automation-pipeline.yaml       #   Airflow, Prefect, Celery
         ├── content-site.yaml              #   Gatsby, Hugo, Astro
         ├── data-dashboard.yaml            #   Pandas, Streamlit, Plotly
+        ├── ispn-deployment.yaml           #   ISPN skill → AWS EKS (27 domains)
         ├── mobile-app.yaml                #   React Native, Flutter, Expo
         └── web-app.yaml                   #   React, Vue, Next.js + backend
 ```
@@ -259,6 +262,13 @@ These files are loaded into agent context via the `skills` frontmatter field. Th
   - "creates designs" → Canva MCP
   - "searches jobs" → Indeed MCP
 
+### `ispn/` — ISPN Deployment References
+- **Purpose:** Domain-specific reference files for the ISPN Skill Deployment Pipeline template. Loaded by the 6 ISPN specialists (api-wrapper, infra-builder, schema-designer, frontend-dev, deployer, quality-tester) to provide technical patterns across 27 technology domains.
+- **Current files:**
+  - `env-context.md` — Shared AWS/EKS/RDS/API credentials. Single update point for all specialists. All values PENDING until Ali provides credentials.
+- **Planned files (Phases 2-4):**
+  - `fastapi-patterns.md`, `async-python.md`, `aws-security.md`, `docker-kubernetes.md`, `kubernetes-operations.md`, `postgres-schemas.md`, `react-patterns.md`, `deployment-scripts.md`, `integration-apis.md`, `logging-observability.md`, `api-testing.md`
+
 ---
 
 ## `subagent-lifecycle/scripts/` — Automation Hooks
@@ -313,7 +323,7 @@ Skills run in the main conversation context and CAN invoke subagents. This is th
   4. README content analysis
   5. Git history patterns
 - **Pipeline chain:** architect → scaffolder → memory-seeder → validator
-- **6 templates available** (matched via inference or user selection)
+- **7 templates available** (matched via inference or user selection)
 - **Deployment:** Progressive waves (core agents first, then optional additions)
 - **Demo mode:** Creates a demo task for each agent to prove it works
 
@@ -331,6 +341,7 @@ YAML templates provide pre-configured agent rosters that handle 80% of projects 
 | `data-dashboard.yaml` | Pandas, Streamlit, Plotly | data-engineer, analyst, visualizer | [data-engineer, visualizer] | Summarize patterns in data file |
 | `mobile-app.yaml` | React Native, Flutter, Expo | ui-builder, logic-handler, platform-specialist | [ui-builder, logic-handler] | Create settings screen |
 | `web-app.yaml` | React, Vue, Next.js + backend | frontend-dev, api-builder, tester, deployer | [frontend-dev, api-builder] | Add footer component |
+| `ispn-deployment.yaml` | Python skills → AWS EKS (27 domains) | api-wrapper, infra-builder, schema-designer, frontend-dev, deployer, quality-tester | [api-wrapper, schema-designer], [infra-builder, frontend-dev] | Wrap health check in FastAPI endpoint |
 
 ---
 
@@ -377,7 +388,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `.claude/scripts/` (1 symlink) | Hooks |
 | `.claude/settings.json` | Project settings |
 
-**Plugin** (`subagent-lifecycle/`): 23 files across 10 directories
+**Plugin** (`subagent-lifecycle/`): 25 files across 11 directories
 
 | Directory | Files |
 |-----------|-------|
@@ -385,9 +396,10 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `agents/` | 5 |
 | `docs/` | 3 |
 | `references/` | 3 |
+| `references/ispn/` | 1 |
 | `scripts/` | 1 |
 | `skills/project-guide/` | 1 |
 | `skills/subagent-companion/` | 1 |
 | `skills/subagent-concierge/` | 1 |
-| `templates/` | 6 |
-| **Plugin total** | **23 files** |
+| `templates/` | 7 |
+| **Plugin total** | **25 files** |
