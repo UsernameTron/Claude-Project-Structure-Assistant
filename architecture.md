@@ -24,7 +24,7 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Skills (Layer 0-1) | 3 | Routing and orchestration in main conversation context |
 | Subagents (Layer 2) | 5 | Isolated worker agents for pipeline execution |
 | Templates | 7 | Pre-configured ecosystem blueprints by project type |
-| Reference docs | 4 | Injected knowledge for agent design decisions (3 general + 1 ISPN directory) |
+| Reference docs | 15 | Injected knowledge for agent design decisions (3 general + 12 ISPN) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
 | Hooks/Scripts | 1 | Automatic health monitoring on subagent completion |
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
@@ -86,7 +86,7 @@ Claude MCP Ecosystem/
     │   ├── agent-design-patterns.md       #   7 reusable agent archetypes
     │   ├── frontmatter-reference.md       #   YAML frontmatter schema spec
     │   ├── mcp-catalog.md                 #   MCP server → capability mapping
-    │   └── ispn/                          #   ISPN deployment reference files
+    │   └── ispn/                          #   ISPN deployment reference files (12)
     │       ├── env-context.md             #     AWS/EKS/RDS credentials (PENDING)
     │       ├── aws-security.md            #     IAM, VPC, secrets, Charlie's checklist
     │       ├── docker-kubernetes.md       #     Dockerfiles, K8s manifests, NGINX, compose
@@ -94,7 +94,11 @@ Claude MCP Ecosystem/
     │       ├── fastapi-patterns.md        #     App factory, models, middleware, caching
     │       ├── async-python.md            #     asyncio, httpx, asyncpg, BackgroundTasks
     │       ├── api-testing.md             #     pytest, curl, load tests, promotion gates
-    │       └── logging-observability.md   #     JSON logs, CloudWatch, metrics, alerts
+    │       ├── logging-observability.md   #     JSON logs, CloudWatch, metrics, alerts
+    │       ├── deployment-scripts.md      #     ECR build/push, kubectl, CI/CD, Git
+    │       ├── integration-apis.md        #     Genesys, Graph API, Slack, webhooks
+    │       ├── postgres-schemas.md        #     DDL, Alembic migrations, gap analysis
+    │       └── react-patterns.md          #     Components, migration table, BFF fetch
     │
     ├── scripts/                           # Automation hooks
     │   └── agent-health-check.sh          #   SubagentStop health monitor
@@ -280,8 +284,10 @@ These files are loaded into agent context via the `skills` frontmatter field. Th
   - `async-python.md` — asyncio fundamentals for FastAPI, sync-to-async wrapping (run_in_executor), httpx async client (singleton with connection pooling, parallel requests, retry with backoff), asyncpg (connection pool, query patterns, transactions), SQLAlchemy async alternative, BackgroundTasks (post-response operations), connection pooling summary, and async patterns cheatsheet.
   - `api-testing.md` — pytest configuration (asyncio_mode=auto), fixtures (async httpx test client, sample data), health/skill/middleware/integration test patterns, curl smoke test scripts, output comparison against baselines, load testing (asyncio + httpx with P50/P95/P99 reporting), Innovation Lab gate progression, pre-promotion checklist (code quality, API contract, security, infrastructure, observability), and production readiness assessment template.
   - `logging-observability.md` — Structured JSON logging (custom formatter for CloudWatch), correlation ID propagation (request_id via contextvars across middleware/services/external calls), request and skill-level metrics, CloudWatch integration (Fluent Bit config, log group structure), CloudWatch Insights queries (latency percentiles, error rate, slowest endpoints, request tracing, success rate), CloudWatch alarms (error rate, P95 latency), custom metrics via Embedded Metric Format, monitoring pipeline architecture, dashboard metrics table, and log level guidelines.
-- **Planned files (Phase 4):**
-  - `deployment-scripts.md`, `integration-apis.md`, `postgres-schemas.md`, `react-patterns.md`
+  - `deployment-scripts.md` — ECR build-push script (multi-platform, scan results), deploy script (kubeconfig, manifest apply, image update, rollout wait, health check), rollback script, kubectl daily operations cheatsheet, GitHub Actions CI/CD workflow (test → build-push → deploy), Git branch strategy and commit conventions, release tagging script, and developer environment setup script.
+  - `integration-apis.md` — Genesys Cloud CX OAuth2 client (token management, queue metrics, agent status, interaction queries, rate limits), Microsoft Graph API client (app-only auth, SharePoint file listing/search/download, Excel-to-DataFrame, change notification subscriptions), Graph webhook receiver endpoint (validation handshake, client state verification), Slack incoming webhooks (Block Kit formatted alerts, severity color coding, deployment/health/error templates, rate limits), and generic inbound webhook listener pattern (HMAC signature verification, source routing).
+  - `postgres-schemas.md` — Naming conventions, standard columns (created_at/updated_at), DDL templates (skill metrics, analysis results, reference data, staging tables), auto-update trigger, Alembic async migration setup (env.py, revision template, common operations), migration rules, row-level validation in staging, integrity checks (duplicates, gaps, referential), gap analysis queries (date coverage, period comparison), EXPLAIN ANALYZE guidance with warning sign table, and Docker Compose init script.
+  - `react-patterns.md` — Project structure, BFF-aware API client (TypeScript, credentials-inclusive fetch), data fetching hooks (generic useApi, skill-specific), component templates (Dashboard layout, LoadingSpinner, ErrorBanner, DataTable), TypeScript types mirroring Pydantic models, Obsidian dark-mode CSS theme (full variable system, table/button/input/spinner styles), vanilla JS → React migration table (15 pattern mappings), migration checklist, and before/after migration example.
 
 ---
 
@@ -402,7 +408,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `.claude/scripts/` (1 symlink) | Hooks |
 | `.claude/settings.json` | Project settings |
 
-**Plugin** (`subagent-lifecycle/`): 32 files across 11 directories
+**Plugin** (`subagent-lifecycle/`): 36 files across 11 directories
 
 | Directory | Files |
 |-----------|-------|
@@ -410,10 +416,10 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `agents/` | 5 |
 | `docs/` | 3 |
 | `references/` | 3 |
-| `references/ispn/` | 8 |
+| `references/ispn/` | 12 |
 | `scripts/` | 1 |
 | `skills/project-guide/` | 1 |
 | `skills/subagent-companion/` | 1 |
 | `skills/subagent-concierge/` | 1 |
 | `templates/` | 7 |
-| **Plugin total** | **32 files** |
+| **Plugin total** | **36 files** |
