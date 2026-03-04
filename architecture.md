@@ -23,8 +23,8 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 |----------|-------|-------------|
 | Skills (Layer 0-1) | 3 | Routing and orchestration in main conversation context |
 | Subagents (Layer 2) | 5 | Isolated worker agents for pipeline execution |
-| Templates | 6 | Pre-configured ecosystem blueprints by project type |
-| Reference docs | 3 | Injected knowledge for agent design decisions |
+| Templates | 7 | Pre-configured ecosystem blueprints by project type |
+| Reference docs | 15 | Injected knowledge for agent design decisions (3 general + 12 ISPN) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
 | Hooks/Scripts | 1 | Automatic health monitoring on subagent completion |
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
@@ -85,7 +85,20 @@ Claude MCP Ecosystem/
     ├── references/                        # Injected knowledge (loaded by agents)
     │   ├── agent-design-patterns.md       #   7 reusable agent archetypes
     │   ├── frontmatter-reference.md       #   YAML frontmatter schema spec
-    │   └── mcp-catalog.md                 #   MCP server → capability mapping
+    │   ├── mcp-catalog.md                 #   MCP server → capability mapping
+    │   └── ispn/                          #   ISPN deployment reference files (12)
+    │       ├── env-context.md             #     AWS/EKS/RDS credentials (PENDING)
+    │       ├── aws-security.md            #     IAM, VPC, secrets, Charlie's checklist
+    │       ├── docker-kubernetes.md       #     Dockerfiles, K8s manifests, NGINX, compose
+    │       ├── kubernetes-operations.md   #     kubectl ops, debugging, RBAC, scaling
+    │       ├── fastapi-patterns.md        #     App factory, models, middleware, caching
+    │       ├── async-python.md            #     asyncio, httpx, asyncpg, BackgroundTasks
+    │       ├── api-testing.md             #     pytest, curl, load tests, promotion gates
+    │       ├── logging-observability.md   #     JSON logs, CloudWatch, metrics, alerts
+    │       ├── deployment-scripts.md      #     ECR build/push, kubectl, CI/CD, Git
+    │       ├── integration-apis.md        #     Genesys, Graph API, Slack, webhooks
+    │       ├── postgres-schemas.md        #     DDL, Alembic migrations, gap analysis
+    │       └── react-patterns.md          #     Components, migration table, BFF fetch
     │
     ├── scripts/                           # Automation hooks
     │   └── agent-health-check.sh          #   SubagentStop health monitor
@@ -103,6 +116,7 @@ Claude MCP Ecosystem/
         ├── automation-pipeline.yaml       #   Airflow, Prefect, Celery
         ├── content-site.yaml              #   Gatsby, Hugo, Astro
         ├── data-dashboard.yaml            #   Pandas, Streamlit, Plotly
+        ├── ispn-deployment.yaml           #   ISPN skill → AWS EKS (27 domains)
         ├── mobile-app.yaml                #   React Native, Flutter, Expo
         └── web-app.yaml                   #   React, Vue, Next.js + backend
 ```
@@ -259,6 +273,22 @@ These files are loaded into agent context via the `skills` frontmatter field. Th
   - "creates designs" → Canva MCP
   - "searches jobs" → Indeed MCP
 
+### `ispn/` — ISPN Deployment References
+- **Purpose:** Domain-specific reference files for the ISPN Skill Deployment Pipeline template. Loaded by the 6 ISPN specialists (api-wrapper, infra-builder, schema-designer, frontend-dev, deployer, quality-tester) to provide technical patterns across 27 technology domains.
+- **Current files (8):**
+  - `env-context.md` — Shared AWS/EKS/RDS/API credentials. Single update point for all specialists. All values PENDING until Ali provides credentials.
+  - `aws-security.md` — AWS CLI setup, IAM roles/policies (ECR push, RDS access, IRSA), VPC security groups, secret management, tagging strategy, and Charlie's security approval checklist.
+  - `docker-kubernetes.md` — Multi-stage Dockerfile templates, .dockerignore, docker-compose for local dev, Docker networking, complete K8s manifest set (Deployment, Service, ConfigMap, Secret, ServiceAccount, Ingress, NetworkPolicy, HPA, CronJob), NGINX reverse proxy/BFF config, Dockerfile DSL patterns (layer optimization, BuildKit cache, multi-arch builds), and manifest organization with kustomize.
+  - `kubernetes-operations.md` — Kubeconfig/context management, namespace setup (ResourceQuota, LimitRange), RBAC (namespace-scoped Role/RoleBinding), pod debugging (failure diagnosis table, exec, ephemeral containers), log streaming, port forwarding, deployment rollbacks, manual/auto scaling (HPA), resource inspection cheatsheet, and troubleshooting workflow.
+  - `fastapi-patterns.md` — App factory, project structure, config via pydantic-settings, health checks (liveness + readiness), Pydantic request/response models, skill wrapper pattern, middleware (request logging, global error handler, rate limiting, CORS), dependency injection (DB sessions), file upload endpoints (Excel), response caching (TTL cache), Python packaging (requirements.txt), and OpenAPI customization.
+  - `async-python.md` — asyncio fundamentals for FastAPI, sync-to-async wrapping (run_in_executor), httpx async client (singleton with connection pooling, parallel requests, retry with backoff), asyncpg (connection pool, query patterns, transactions), SQLAlchemy async alternative, BackgroundTasks (post-response operations), connection pooling summary, and async patterns cheatsheet.
+  - `api-testing.md` — pytest configuration (asyncio_mode=auto), fixtures (async httpx test client, sample data), health/skill/middleware/integration test patterns, curl smoke test scripts, output comparison against baselines, load testing (asyncio + httpx with P50/P95/P99 reporting), Innovation Lab gate progression, pre-promotion checklist (code quality, API contract, security, infrastructure, observability), and production readiness assessment template.
+  - `logging-observability.md` — Structured JSON logging (custom formatter for CloudWatch), correlation ID propagation (request_id via contextvars across middleware/services/external calls), request and skill-level metrics, CloudWatch integration (Fluent Bit config, log group structure), CloudWatch Insights queries (latency percentiles, error rate, slowest endpoints, request tracing, success rate), CloudWatch alarms (error rate, P95 latency), custom metrics via Embedded Metric Format, monitoring pipeline architecture, dashboard metrics table, and log level guidelines.
+  - `deployment-scripts.md` — ECR build-push script (multi-platform, scan results), deploy script (kubeconfig, manifest apply, image update, rollout wait, health check), rollback script, kubectl daily operations cheatsheet, GitHub Actions CI/CD workflow (test → build-push → deploy), Git branch strategy and commit conventions, release tagging script, and developer environment setup script.
+  - `integration-apis.md` — Genesys Cloud CX OAuth2 client (token management, queue metrics, agent status, interaction queries, rate limits), Microsoft Graph API client (app-only auth, SharePoint file listing/search/download, Excel-to-DataFrame, change notification subscriptions), Graph webhook receiver endpoint (validation handshake, client state verification), Slack incoming webhooks (Block Kit formatted alerts, severity color coding, deployment/health/error templates, rate limits), and generic inbound webhook listener pattern (HMAC signature verification, source routing).
+  - `postgres-schemas.md` — Naming conventions, standard columns (created_at/updated_at), DDL templates (skill metrics, analysis results, reference data, staging tables), auto-update trigger, Alembic async migration setup (env.py, revision template, common operations), migration rules, row-level validation in staging, integrity checks (duplicates, gaps, referential), gap analysis queries (date coverage, period comparison), EXPLAIN ANALYZE guidance with warning sign table, and Docker Compose init script.
+  - `react-patterns.md` — Project structure, BFF-aware API client (TypeScript, credentials-inclusive fetch), data fetching hooks (generic useApi, skill-specific), component templates (Dashboard layout, LoadingSpinner, ErrorBanner, DataTable), TypeScript types mirroring Pydantic models, Obsidian dark-mode CSS theme (full variable system, table/button/input/spinner styles), vanilla JS → React migration table (15 pattern mappings), migration checklist, and before/after migration example.
+
 ---
 
 ## `subagent-lifecycle/scripts/` — Automation Hooks
@@ -313,7 +343,7 @@ Skills run in the main conversation context and CAN invoke subagents. This is th
   4. README content analysis
   5. Git history patterns
 - **Pipeline chain:** architect → scaffolder → memory-seeder → validator
-- **6 templates available** (matched via inference or user selection)
+- **7 templates available** (matched via inference or user selection)
 - **Deployment:** Progressive waves (core agents first, then optional additions)
 - **Demo mode:** Creates a demo task for each agent to prove it works
 
@@ -331,6 +361,7 @@ YAML templates provide pre-configured agent rosters that handle 80% of projects 
 | `data-dashboard.yaml` | Pandas, Streamlit, Plotly | data-engineer, analyst, visualizer | [data-engineer, visualizer] | Summarize patterns in data file |
 | `mobile-app.yaml` | React Native, Flutter, Expo | ui-builder, logic-handler, platform-specialist | [ui-builder, logic-handler] | Create settings screen |
 | `web-app.yaml` | React, Vue, Next.js + backend | frontend-dev, api-builder, tester, deployer | [frontend-dev, api-builder] | Add footer component |
+| `ispn-deployment.yaml` | Python skills → AWS EKS (27 domains) | api-wrapper, infra-builder, schema-designer, frontend-dev, deployer, quality-tester | [api-wrapper, schema-designer], [infra-builder, frontend-dev] | Wrap health check in FastAPI endpoint |
 
 ---
 
@@ -377,7 +408,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `.claude/scripts/` (1 symlink) | Hooks |
 | `.claude/settings.json` | Project settings |
 
-**Plugin** (`subagent-lifecycle/`): 23 files across 10 directories
+**Plugin** (`subagent-lifecycle/`): 36 files across 11 directories
 
 | Directory | Files |
 |-----------|-------|
@@ -385,9 +416,10 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `agents/` | 5 |
 | `docs/` | 3 |
 | `references/` | 3 |
+| `references/ispn/` | 12 |
 | `scripts/` | 1 |
 | `skills/project-guide/` | 1 |
 | `skills/subagent-companion/` | 1 |
 | `skills/subagent-concierge/` | 1 |
-| `templates/` | 6 |
-| **Plugin total** | **23 files** |
+| `templates/` | 7 |
+| **Plugin total** | **36 files** |

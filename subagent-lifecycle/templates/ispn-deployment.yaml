@@ -1,0 +1,144 @@
+# ISPN Skill Deployment Pipeline
+# Full-stack deployment for ISPN workforce intelligence skills
+
+name: ispn-deployment
+display_name: "ISPN Skill Deployment Pipeline"
+description: >
+  Full-stack deployment for ISPN workforce intelligence skills.
+  Wraps Python skills in FastAPI, containerizes, generates K8s manifests,
+  creates database schemas, sets up alerting, tests, and deploys to
+  AWS EKS. For developers who write Python but need infrastructure
+  code generated across 27 technology domains.
+
+trigger_conditions:
+  - "deploy skill"
+  - "deploy to EKS"
+  - "package for Ali"
+  - "containerize"
+  - "ISPN deployment"
+  - "wrap in API"
+  - "deploy this"
+
+file_signals:
+  extensions: [".py"]
+  directories: ["/app", "/skills"]
+  packages: ["fastapi", "uvicorn", "pydantic", "pandas"]
+
+agents:
+  - name: api-wrapper
+    description: "Wraps Python skills in FastAPI with async patterns, Pydantic models, middleware, health checks"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "FastAPI"
+      - "wrap in API"
+      - "endpoint"
+      - "API layer"
+      - "requirements"
+      - "async"
+      - "middleware"
+
+  - name: infra-builder
+    description: "Generates Dockerfiles, K8s manifests, NGINX configs, AWS CLI setup, and docker-compose for local dev"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "Dockerfile"
+      - "Kubernetes"
+      - "K8s"
+      - "deployment"
+      - "container"
+      - "docker"
+      - "NGINX"
+      - "manifest"
+      - "namespace"
+      - "AWS"
+      - "EKS"
+      - "ECR"
+      - "IAM"
+      - "security group"
+      - "kubeconfig"
+
+  - name: schema-designer
+    description: "Generates PostgreSQL schemas, migrations, gap analysis queries, and data validation"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 15
+    routing_triggers:
+      - "database"
+      - "schema"
+      - "SQL"
+      - "PostgreSQL"
+      - "table"
+      - "DDL"
+      - "migration"
+      - "gap analysis"
+      - "Excel to database"
+
+  - name: frontend-dev
+    description: "Generates React components consuming FastAPI backends, vanilla JS migration, HTML/CSS dashboards"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 20
+    routing_triggers:
+      - "React"
+      - "component"
+      - "frontend"
+      - "UI"
+      - "dashboard"
+      - "HTML"
+      - "migrate from vanilla"
+
+  - name: deployer
+    description: "ECR build/push, kubectl deploy, Slack alerts, Genesys API, SharePoint webhooks, logging, CI/CD"
+    model: sonnet
+    tools: Read, Write, Edit, Bash, Glob, Grep
+    memory: project
+    maxTurns: 25
+    routing_triggers:
+      - "deploy"
+      - "push"
+      - "kubectl"
+      - "Slack"
+      - "Genesys"
+      - "SharePoint"
+      - "Graph API"
+      - "webhook"
+      - "monitoring"
+      - "alerting"
+      - "logging"
+      - "CI/CD"
+      - "build script"
+
+  - name: quality-tester
+    description: "Generates and runs pytest, httpx integration tests, curl scripts, API validation, promotion checklists"
+    model: haiku
+    tools: Read, Write, Bash, Glob, Grep
+    disallowedTools: Edit
+    memory: project
+    maxTurns: 15
+    routing_triggers:
+      - "test"
+      - "validate"
+      - "does it work"
+      - "compare output"
+      - "health check"
+      - "integration test"
+      - "ready for production"
+      - "promotion"
+
+parallel_groups:
+  - [api-wrapper, schema-designer]
+  - [infra-builder, frontend-dev]
+
+demo_task:
+  agent: api-wrapper
+  task: "Wrap the health check function into a FastAPI endpoint at /api/v1/health"
+  additive: true
+  estimated_seconds: 20
