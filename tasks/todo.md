@@ -1,35 +1,32 @@
-# Current Task: ISPN Deployment Pipeline — Phase 1 + Phase 2
+# Current Task: ISPN Deployment Pipeline — Phases 1-3
 
 **Branch**: `feat/ispn-deployment-template`
 **Started**: 2026-03-04
 **Spec**: `/Users/cpconnor/Desktop/ISPN-DEPLOYMENT-PIPELINE-SPEC-v1.0.md`
 
-## Phase 1 Plan (COMPLETE)
-- [x] Create branch `feat/ispn-deployment-template`
-- [x] Create `subagent-lifecycle/templates/ispn-deployment.yaml` from spec
-- [x] Create `subagent-lifecycle/references/ispn/` directory
-- [x] Create `subagent-lifecycle/references/ispn/env-context.md` with PENDING placeholders
-- [x] Update `subagent-lifecycle/plugin.json` — register template + references
-- [x] Update `architecture.md` — add template to inventory table + directory map
+## Phase 1 (COMPLETE — commit c107d83)
+- [x] Create branch, template, env-context.md, update plugin.json + architecture.md
 
-## Phase 2 Plan (COMPLETE)
-- [x] Create `aws-security.md` — AWS CLI, IAM roles/policies, VPC security, Charlie's checklist
-- [x] Create `kubernetes-operations.md` — kubectl ops, debugging, RBAC, scaling
-- [x] Create `docker-kubernetes.md` — Dockerfiles, K8s manifests, NGINX, compose
-- [x] Update `architecture.md` — add files to directory map, references section, file counts
+## Phase 2 (COMPLETE — commit eecd9ef)
+- [x] `aws-security.md` (312 lines) — AWS CLI, IAM, VPC, Charlie's checklist
+- [x] `kubernetes-operations.md` (428 lines) — kubectl ops, debugging, RBAC, scaling
+- [x] `docker-kubernetes.md` (711 lines) — Dockerfiles, K8s manifests, NGINX, compose
+
+## Phase 3 (COMPLETE)
+- [x] `fastapi-patterns.md` (650 lines) — app factory, models, middleware, caching, uploads
+- [x] `async-python.md` (414 lines) — asyncio, httpx, asyncpg, BackgroundTasks, pooling
+- [x] `api-testing.md` (569 lines) — pytest, curl, load tests, promotion checklist
+- [x] `logging-observability.md` (458 lines) — JSON logs, CloudWatch, metrics, alerts
+- [x] Update architecture.md — directory map, references section, file counts (32 total)
 
 ## Verification
-- [x] All 4 ispn/ reference files exist (env-context, aws-security, docker-kubernetes, kubernetes-operations)
-- [x] plugin.json valid JSON (templates: 7, references: 4)
-- [x] architecture.md file counts match reality (28 plugin files, 11 directories)
-- [x] No TODO/FIXME left behind
+- [x] 8 files in references/ispn/ (4 Phase 2 + 4 Phase 3)
+- [x] 32 total plugin files matches architecture.md claim
+- [x] All file counts in architecture.md verified against filesystem
 
 ## Results
-Phase 1: Template + structure created (commit c107d83).
-Phase 2: 3 P0 reference files created for infra-builder specialist:
-- `aws-security.md` (312 lines) — CLI setup, IAM roles, VPC security groups, IRSA, secret management, Charlie's security argument
-- `kubernetes-operations.md` (428 lines) — kubeconfig, RBAC, pod debugging, log streaming, port-forward, rollbacks, HPA, troubleshooting workflow
-- `docker-kubernetes.md` (711 lines) — multi-stage Dockerfiles, docker-compose, Docker networking, 9 K8s manifest types, NGINX reverse proxy/BFF, Dockerfile DSL, kustomize
+Phases 1-3 complete. 8 of 12 reference files created (3,592 total lines).
+All P0 (infra-builder) and P1 (api-wrapper, quality-tester, deployer) reference files done.
 
 ## Session Handoff
-Phases 1-2 complete. Phases 3-4 (8 remaining reference files) not yet started.
+Phase 4 remaining: 4 P2 reference files (deployment-scripts.md, integration-apis.md, postgres-schemas.md, react-patterns.md).
