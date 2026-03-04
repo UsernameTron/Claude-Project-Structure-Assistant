@@ -87,7 +87,10 @@ Claude MCP Ecosystem/
     │   ├── frontmatter-reference.md       #   YAML frontmatter schema spec
     │   ├── mcp-catalog.md                 #   MCP server → capability mapping
     │   └── ispn/                          #   ISPN deployment reference files
-    │       └── env-context.md             #     AWS/EKS/RDS credentials (PENDING)
+    │       ├── env-context.md             #     AWS/EKS/RDS credentials (PENDING)
+    │       ├── aws-security.md            #     IAM, VPC, secrets, Charlie's checklist
+    │       ├── docker-kubernetes.md       #     Dockerfiles, K8s manifests, NGINX, compose
+    │       └── kubernetes-operations.md   #     kubectl ops, debugging, RBAC, scaling
     │
     ├── scripts/                           # Automation hooks
     │   └── agent-health-check.sh          #   SubagentStop health monitor
@@ -264,10 +267,13 @@ These files are loaded into agent context via the `skills` frontmatter field. Th
 
 ### `ispn/` — ISPN Deployment References
 - **Purpose:** Domain-specific reference files for the ISPN Skill Deployment Pipeline template. Loaded by the 6 ISPN specialists (api-wrapper, infra-builder, schema-designer, frontend-dev, deployer, quality-tester) to provide technical patterns across 27 technology domains.
-- **Current files:**
+- **Current files (4):**
   - `env-context.md` — Shared AWS/EKS/RDS/API credentials. Single update point for all specialists. All values PENDING until Ali provides credentials.
-- **Planned files (Phases 2-4):**
-  - `fastapi-patterns.md`, `async-python.md`, `aws-security.md`, `docker-kubernetes.md`, `kubernetes-operations.md`, `postgres-schemas.md`, `react-patterns.md`, `deployment-scripts.md`, `integration-apis.md`, `logging-observability.md`, `api-testing.md`
+  - `aws-security.md` — AWS CLI setup, IAM roles/policies (ECR push, RDS access, IRSA), VPC security groups, secret management, tagging strategy, and Charlie's security approval checklist.
+  - `docker-kubernetes.md` — Multi-stage Dockerfile templates, .dockerignore, docker-compose for local dev, Docker networking, complete K8s manifest set (Deployment, Service, ConfigMap, Secret, ServiceAccount, Ingress, NetworkPolicy, HPA, CronJob), NGINX reverse proxy/BFF config, Dockerfile DSL patterns (layer optimization, BuildKit cache, multi-arch builds), and manifest organization with kustomize.
+  - `kubernetes-operations.md` — Kubeconfig/context management, namespace setup (ResourceQuota, LimitRange), RBAC (namespace-scoped Role/RoleBinding), pod debugging (failure diagnosis table, exec, ephemeral containers), log streaming, port forwarding, deployment rollbacks, manual/auto scaling (HPA), resource inspection cheatsheet, and troubleshooting workflow.
+- **Planned files (Phases 3-4):**
+  - `fastapi-patterns.md`, `async-python.md`, `api-testing.md`, `logging-observability.md`, `deployment-scripts.md`, `integration-apis.md`, `postgres-schemas.md`, `react-patterns.md`
 
 ---
 
@@ -388,7 +394,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `.claude/scripts/` (1 symlink) | Hooks |
 | `.claude/settings.json` | Project settings |
 
-**Plugin** (`subagent-lifecycle/`): 25 files across 11 directories
+**Plugin** (`subagent-lifecycle/`): 28 files across 11 directories
 
 | Directory | Files |
 |-----------|-------|
@@ -396,10 +402,10 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `agents/` | 5 |
 | `docs/` | 3 |
 | `references/` | 3 |
-| `references/ispn/` | 1 |
+| `references/ispn/` | 4 |
 | `scripts/` | 1 |
 | `skills/project-guide/` | 1 |
 | `skills/subagent-companion/` | 1 |
 | `skills/subagent-concierge/` | 1 |
 | `templates/` | 7 |
-| **Plugin total** | **25 files** |
+| **Plugin total** | **28 files** |
