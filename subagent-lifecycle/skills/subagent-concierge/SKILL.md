@@ -90,6 +90,7 @@ When a project directory exists, run these five signals before asking any questi
 |:-----------|:-------|:---------|
 | .jsx, .tsx, .vue, .svelte, .css, .scss, .html | Frontend | Web App or Content Site |
 | .py, .rb, .go, .rs, .java + /api/, /routes/, /endpoints/ | Backend/API | API/Backend or Web App |
+| .py + /skills/ + fastapi/uvicorn/pydantic/pandas in requirements | ISPN Skill | ISPN Deployment |
 | .csv, .json, .xlsx, .parquet + /data/, /analytics/ | Data processing | Data Dashboard |
 | .md, .mdx, /content/, /posts/, /blog/ | Content | Content Site |
 | /workflows/, /pipelines/, /jobs/, /cron/ | Automation | Automation Pipeline |
@@ -291,6 +292,7 @@ Must be ADDITIVE (create a new file), never modification of existing code.
 | Content Site | Content specialist generates a blog post template |
 | Automation | Pipeline specialist maps out current workflow steps |
 | Mobile | UI specialist creates a placeholder settings screen |
+| ISPN Deployment | API wrapper specialist wraps health check in FastAPI endpoint |
 
 **Run with maxTurns: 10.** Prevents runaway behavior. If the specialist hits the limit,
 catch it: "The demo hit a limit — but you get the idea."
@@ -325,8 +327,8 @@ appropriate template file at runtime based on the inference engine's match. Each
 template specifies: agent roster, tool profiles, memory scopes, MCP mappings,
 routing rules, and parallel groups.
 
-Six templates available: web-app, data-dashboard, api-backend, content-site,
-automation-pipeline, mobile-app.
+Seven templates available: web-app, data-dashboard, api-backend, content-site,
+automation-pipeline, mobile-app, ispn-deployment.
 
 When multiple templates partially match, prefer the one aligning with the project's
 PRIMARY output. A project that "builds a dashboard from an API" is data-dashboard
@@ -396,7 +398,7 @@ deployment:
   rationale: "Non-coder setup interface applies to any Claude Code project"
 chain_position: "Layer 1 — orchestration skill invoked by project-guide"
 type: "SKILL (not subagent — must chain pipeline subagents)"
-templates: 6
+templates: 7
 decision_engine_rules: 7
 progressive_deployment_waves: 3
 ```
