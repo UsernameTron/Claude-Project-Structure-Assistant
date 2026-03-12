@@ -1,12 +1,24 @@
 {
+  "_comment": "REFERENCE DOCUMENT — Claude Code does NOT read this file. Copy sections you need into settings.json.",
+
   "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(git diff:*)"
+    ],
     "deny": [
       "Read(.env)",
       "Read(.env.*)",
       "Read(./secrets/**)",
-      "Bash(sudo:*)"
+      "Bash(sudo:*)",
+      "Bash(curl:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
     ]
   },
+
   "hooks": {
     "PreToolUse": [
       {
@@ -31,17 +43,10 @@
           }
         ]
       }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/scripts/agent-health-check.sh"
-          }
-        ]
-      }
     ]
+  },
+
+  "env": {
+    "NODE_ENV": "development"
   }
 }

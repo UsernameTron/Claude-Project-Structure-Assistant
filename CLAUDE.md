@@ -17,6 +17,33 @@ Do not skip this sequence. Do not begin work before completing it.
 
 ---
 
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/prime` | Boot session — load context, check state, detect continuity |
+| `/plan <request>` | Create implementation plan (auto-scales to complexity) |
+| `/build <plan-path>` | Execute plan with git branches and step-by-step commits |
+| `/status` | Dashboard — plans, sessions, git state, workspace health |
+| `/wrap` | Close session — log work, note next steps, persist state |
+
+---
+
+## Operator Context
+
+Load at session start (skip any that don't exist):
+
+| File | Contains |
+|------|----------|
+| `context/role.md` | Operator's role, responsibilities, working style |
+| `context/org.md` | Organization background, team structure |
+| `context/priorities.md` | Current goals, success criteria, deadlines |
+| `context/metrics.md` | Live metrics, KPIs, current state data |
+
+Context files are private — never commit or echo their contents.
+
+---
+
 ## Workflow Rules
 
 ### 1. Plan Before Building
@@ -55,7 +82,12 @@ Do not skip this sequence. Do not begin work before completing it.
 - If a fix feels hacky, step back and implement the clean solution.
 - For simple, obvious fixes: skip this step. Do not over-engineer.
 
-### 6. Fix Bugs Autonomously
+### 6. Track State
+- After completing significant work, append to `state/session-log.md`. Log key decisions to `state/decisions.md`.
+- Context is private — never commit files in `context/` or `state/`. Never echo their contents in outputs.
+- Keep CLAUDE.md current — if you add commands, change structure, or modify workflows, update this file immediately.
+
+### 7. Fix Bugs Autonomously
 - When given a bug report: read the logs, identify the root cause, fix it.
 - Do not ask clarifying questions if the error message or stack trace provides the answer.
 - Do not ask the user how to fix it. Investigate and resolve.
@@ -204,11 +236,28 @@ Do not guess silently. If you make an assumption, state it.
 Maintain this structure in the project root:
 
 ```
-tasks/
-├── todo.md          # Current task plan with checkable items
-├── lessons.md       # Accumulated rules from past corrections
-└── session-log.md   # Audit trail across sessions (optional)
+tasks/                   # Task tracking (committed)
+├── todo.md              # Current task plan with checkable items
+├── lessons.md           # Accumulated rules from past corrections
+└── session-log.md       # Audit trail across sessions (optional)
+
+context/                 # Private operator identity (gitignored)
+├── _templates/          # Example templates (committed)
+├── role.md
+├── org.md
+├── priorities.md
+└── metrics.md
+
+state/                   # Session audit trail (gitignored)
+├── session-log.md       # Chronological log of all sessions
+└── decisions.md         # Design decision records
+
+plans/                   # Implementation plans from /plan (gitignored)
+outputs/                 # Deliverables and work products (gitignored)
+decisions/               # Architecture Decision Records (committed)
 ```
+
+**Note**: `tasks/` tracks the current task and correction rules. `state/` is a separate chronological audit trail across sessions. Both serve distinct purposes.
 
 ### tasks/todo.md Format
 ```markdown

@@ -7,3 +7,20 @@ dist/
 # Claude Code local settings
 .claude/settings.local.json
 .claude/agent-memory/
+
+# Private operator context
+context/role.md
+context/org.md
+context/priorities.md
+context/metrics.md
+
+# Session state (private, append-only)
+state/
+
+# Working plans and outputs
+plans/*.md
+outputs/
+
+# Environment secrets
+.env
+.env.*

@@ -26,10 +26,13 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Templates | 7 | Pre-configured ecosystem blueprints by project type |
 | Reference docs | 15 | Injected knowledge for agent design decisions (3 general + 12 ISPN) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
-| Hooks/Scripts | 1 | Automatic health monitoring on subagent completion |
+| Hooks/Scripts | 3 | Health monitoring (plugin) + security/lint hooks (ecosystem) |
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
 | Governance | 1 | CLAUDE.md agent operating system |
 | Meta-agents | 1 | repo-doc-architect for documentation generation |
+| Slash commands | 5 | Session lifecycle (/prime, /plan, /build, /status, /wrap) |
+| Context system | 4 | Operator identity templates (role, org, priorities, metrics) |
+| ADR system | 1 | Architecture Decision Record template |
 
 ---
 
@@ -57,11 +60,42 @@ Claude MCP Ecosystem/
 │   │   └── repo-doc-architect.md          #   Standalone meta-agent (regular file)
 │   ├── scripts/
 │   │   └── agent-health-check.sh → symlink #  → subagent-lifecycle/scripts/
-│   └── settings.json                      # Claude Code project settings
+│   ├── settings.json                      # Claude Code project settings
+│   ├── hooks/                              # Ecosystem-level hook scripts
+│   │   ├── pre-bash-security.sh             #   PreToolUse: blocks dangerous bash patterns
+│   │   ├── post-write-lint.sh               #   PostToolUse: auto-formats after writes
+│   │   └── README.md                        #   Hook activation guide
+│   └── commands/                            # Slash commands
+│   │   ├── prime.md                         #   Session boot & context loading
+│   │   ├── plan.md                          #   Adaptive implementation planning
+│   │   ├── build.md                         #   Plan execution with git integration
+│   │   ├── status.md                        #   Workspace dashboard
+│   │   └── wrap.md                          #   Session close & state logging
 │
 ├── tasks/                                 # Governance task tracking
 │   ├── todo.md                            #   Current task plan
 │   └── lessons.md                         #   Accumulated correction rules
+│
+├── context/                                # Private operator identity (gitignored)
+│   ├── _templates/                         #   Example templates (committed)
+│   │   ├── role.example.md
+│   │   ├── org.example.md
+│   │   ├── priorities.example.md
+│   │   └── metrics.example.md
+│   ├── role.md                              #   Operator role (private)
+│   ├── org.md                               #   Organization background (private)
+│   ├── priorities.md                        #   Current goals (private)
+│   └── metrics.md                           #   KPIs and state data (private)
+│
+├── state/                                  # Session audit trail (gitignored)
+│   ├── session-log.md                       #   Chronological session history
+│   └── decisions.md                         #   Design decision records
+│
+├── plans/                                  # Implementation plans from /plan (gitignored)
+├── outputs/                                # Deliverables and work products (gitignored)
+│
+├── decisions/                              # Architecture Decision Records (committed)
+│   └── _template.md                         #   ADR format template
 │
 ├── dist/                                  # Build artifacts (gitignored)
 │   └── subagent-lifecycle.tar.gz
@@ -394,19 +428,27 @@ LAYER 2 — WORKERS (subagents, isolated context)
 
 ## File Count Summary
 
-**Root level** (outside the plugin): 4 regular files + 1 directory of docs
+**Root level** (outside the plugin): 4 regular files + 8 directories
 
-| File | Type |
-|------|------|
+| File / Directory | Type |
+|------------------|------|
 | `.gitignore` | Git configuration |
 | `README.md` | Project documentation |
 | `CLAUDE.md` | Governance |
 | `architecture.md` | Technical reference |
-| `docs/` (2 files) | Planning docs |
+| `docs/` (3 files) | Planning docs + settings reference |
 | `tasks/` (2 files) | Governance tracking |
+| `context/_templates/` (4 files) | Operator identity templates (committed) |
+| `context/*.md` (4 files) | Private operator identity (gitignored) |
+| `state/` (2 files) | Session audit trail (gitignored) |
+| `plans/` | Implementation plans (gitignored) |
+| `outputs/` | Work products (gitignored) |
+| `decisions/` (1 file) | Architecture Decision Records |
 | `.claude/agents/` (5 symlinks + 1 file) | Active agents |
-| `.claude/scripts/` (1 symlink) | Hooks |
-| `.claude/settings.json` | Project settings |
+| `.claude/commands/` (5 files) | Slash commands (/prime, /plan, /build, /status, /wrap) |
+| `.claude/hooks/` (3 files) | Security + lint hooks + README |
+| `.claude/scripts/` (1 symlink) | Agent health check |
+| `.claude/settings.json` | Project settings (deny rules + hook registration) |
 
 **Plugin** (`subagent-lifecycle/`): 36 files across 11 directories
 
