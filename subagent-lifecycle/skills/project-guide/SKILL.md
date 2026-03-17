@@ -13,7 +13,7 @@ description: |
   skill figures it out and routes silently.
 
   REFUSES: Domain-specific work (route to appropriate specialist). Skill creation
-  (redirect to skill-forge). Running pipeline subagents directly (those are internal
+  (redirect to skill-factory). Running pipeline subagents directly (those are internal
   components invoked by the concierge).
 
   TRIGGERS: "set up agents", "set up specialists", "organize my project",
@@ -52,7 +52,7 @@ has no specialists deployed.
 ## WHEN NOT TO USE
 
 Do not invoke for domain-specific work that specialists handle (CSS questions, API
-implementation, data analysis). Do not invoke for skill creation — redirect to skill-forge.
+implementation, data analysis). Do not invoke for skill creation — redirect to skill-factory.
 Do not invoke when the user is clearly doing simple, focused work in a small project with
 fewer than 3 distinct concerns.
 
@@ -209,7 +209,7 @@ After every interaction where the complexity check ran, update `.claude/project-
 | memory-seeder (subagent) | Invoked by concierge, never by project-guide directly |
 | validator (subagent) | Invoked by concierge, never by project-guide directly |
 | auditor (subagent) | Invoked by companion, never by project-guide directly |
-| skill-forge | Project-guide redirects skill creation requests there |
+| skill-factory | Project-guide redirects skill creation requests there |
 
 ---
 
@@ -240,7 +240,7 @@ After every interaction where the complexity check ran, update `.claude/project-
 |:-------|:---------|:---------------|
 | "Fix this CSS bug" | NO FIRE | Main thread or frontend specialist |
 | "Write a Python function to parse CSV" | NO FIRE | Main thread |
-| "Build me a skill for data processing" | NO FIRE | skill-forge |
+| "Build me a skill for data processing" | NO FIRE | skill-factory |
 | "Design a subagent architecture with viability scoring" | NO FIRE | Offer expert escape hatch |
 
 ---

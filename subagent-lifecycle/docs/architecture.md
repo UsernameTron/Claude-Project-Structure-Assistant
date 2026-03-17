@@ -57,7 +57,7 @@ project-guide SKILL reads ecosystem state
     ▼
 concierge SKILL runs inference engine
     │ scans files, packages, README, git history
-    │ scores against 6 templates
+    │ scores against 7 templates
     ▼
 confidence ≥ 80? ──yes──► present summary, deploy on "yes"
     │ no                         │
@@ -157,7 +157,7 @@ trigger matching to pick the right skill.
 ### Why Templates Exist Alongside the Architect
 
 The architect subagent performs custom analysis for unusual projects. But 80%+ of
-projects fit one of six common archetypes. Templates skip the architect entirely,
+projects fit one of seven common archetypes. Templates skip the architect entirely,
 saving one full subagent invocation and producing the zero-question fast path. The
 architect is the fallback for the 20% of projects that templates can't cover.
 
@@ -205,7 +205,8 @@ subagent-lifecycle/
 │   ├── api-backend.yaml
 │   ├── content-site.yaml
 │   ├── automation-pipeline.yaml
-│   └── mobile-app.yaml
+│   ├── mobile-app.yaml
+│   └── ispn-deployment.yaml
 ├── references/                          ← Shared knowledge (skills injection)
 │   ├── frontmatter-reference.md
 │   ├── agent-design-patterns.md

@@ -372,3 +372,39 @@ If a task requires modifying any of these, stop and ask.
 - Never add files directly to `subagent-lifecycle/` without updating the plugin.json component registry.
 - Never commit `.DS_Store` files.
 - `dist/` is gitignored — do not commit build artifacts.
+
+### Routing
+
+The three-layer skill routing system. When user phrases match, Claude Code invokes the
+appropriate skill. Skills run in the main context and can invoke Layer 2 agents.
+
+**Layer 0 — project-guide (invisible router)**
+Fires automatically when the user asks about project organization, agent setup, or
+management. Reads `.claude/agents/` to detect ecosystem state, then routes:
+- No agents present / setup signal → invoke `subagent-concierge`
+- Agents exist / management signal → invoke `subagent-companion`
+- Neither applies (domain work, skill creation, etc.) → do not fire; let main thread handle
+
+**Layer 1 — Orchestration Skills**
+- `subagent-concierge` — initial ecosystem setup. Scans project, runs inference engine,
+  selects template or invokes architect, chains the full pipeline:
+  `architect → scaffolder + memory-seeder (parallel) → validator`
+- `subagent-companion` — day-to-day management (status, add, remove, diagnose, repair).
+  Runs 4-check silent preflight before every operation. Invokes auditor for diagnosis,
+  scaffolder + memory-seeder + validator for single-agent additions.
+
+**Layer 2 — Pipeline Worker Agents** (invoked by Layer 1 skills only, never directly by users)
+| Agent | Role | Model |
+|-------|------|-------|
+| `architect` | Analyzes project, designs agent roster spec | inherit |
+| `scaffolder` | Creates agent files, memory dirs, CLAUDE.md routing, settings hooks | sonnet |
+| `memory-seeder` | Populates each agent's MEMORY.md from project sources | sonnet |
+| `validator` | Structural quality gate; runs in isolated worktree | haiku |
+| `auditor` | Ecosystem health diagnostics (memory bloat, drift, routing gaps) | haiku |
+
+**Skill resolution paths** (Claude Code looks here in order):
+1. `.claude/skills/{name}/SKILL.md` (project scope)
+2. `~/.claude/skills/{name}/SKILL.md` (user scope)
+
+Current project-scope skills (symlinks in `.claude/skills/`):
+- `frontmatter-reference`, `agent-design-patterns`, `mcp-catalog` (injected into architect + scaffolder)

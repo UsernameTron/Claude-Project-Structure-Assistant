@@ -26,7 +26,7 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Templates | 7 | Pre-configured ecosystem blueprints by project type |
 | Reference docs | 15 | Injected knowledge for agent design decisions (3 general + 12 ISPN) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
-| Hooks/Scripts | 3 | Health monitoring (plugin) + security/lint hooks (ecosystem) |
+| Hooks/Scripts | 4 | Health monitoring (plugin) + security/lint hooks (ecosystem) + MCP health check (workspace-ops) |
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
 | Governance | 1 | CLAUDE.md agent operating system |
 | Meta-agents | 1 | repo-doc-architect for documentation generation |
@@ -96,6 +96,18 @@ Claude MCP Ecosystem/
 │
 ├── decisions/                              # Architecture Decision Records (committed)
 │   └── _template.md                         #   ADR format template
+│
+├── workspace-ops/                         # Workspace operations plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json                    #   Plugin manifest
+│   ├── settings.json                      #   Sonnet model lock + rm -rf deny
+│   ├── hooks/
+│   │   └── hooks.json                     #   SessionStart MCP health check
+│   ├── scripts/
+│   │   └── mcp-health-check.sh            #   Parses `claude mcp list` output
+│   └── skills/
+│       └── workspace-lifecycle-ref/
+│           └── SKILL.md                   #   Background ref: /prime→work→/wrap loop
 │
 ├── dist/                                  # Build artifacts (gitignored)
 │   └── subagent-lifecycle.tar.gz
@@ -449,6 +461,17 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `.claude/hooks/` (3 files) | Security + lint hooks + README |
 | `.claude/scripts/` (1 symlink) | Agent health check |
 | `.claude/settings.json` | Project settings (deny rules + hook registration) |
+
+**Plugin** (`workspace-ops/`): 5 files across 5 directories
+
+| Directory | Files |
+|-----------|-------|
+| `workspace-ops/.claude-plugin/` | 1 (plugin.json) |
+| `workspace-ops/` (root) | 1 (settings.json) |
+| `hooks/` | 1 (hooks.json) |
+| `scripts/` | 1 (mcp-health-check.sh) |
+| `skills/workspace-lifecycle-ref/` | 1 (SKILL.md) |
+| **workspace-ops total** | **5 files** |
 
 **Plugin** (`subagent-lifecycle/`): 36 files across 11 directories
 

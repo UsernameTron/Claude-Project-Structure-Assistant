@@ -1,1 +1,1 @@
-../../subagent-lifecycle/agents/scaffolder.md
+/Users/cpconnor/projects/Claude MCP Ecosystem/subagent-lifecycle/agents/scaffolder.md

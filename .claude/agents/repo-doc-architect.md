@@ -1,6 +1,57 @@
 ---
 name: repo-doc-architect
-description: Use this agent when you need to create or update comprehensive repository documentation, analyze codebase architecture, integrate analytics insights, or maintain up-to-date technical documentation. This agent should be used proactively after significant development sessions or when documentation drift is suspected.\n\n**Examples:**\n\n<example>\nContext: User has just completed a major refactoring of the service layer and wants to ensure documentation reflects the changes.\n\nuser: "I just finished refactoring the authentication service and added new monitoring. Can you update the docs?"\n\nassistant: "I'll use the Task tool to launch the repo-doc-architect agent to analyze the changes and update both architecture.md and Claude.md with the latest information."\n\n<commentary>\nThe user has made significant code changes that need documentation. The repo-doc-architect agent will analyze the new structure, update architecture documentation, and integrate any new analytics/monitoring details into Claude.md.\n</commentary>\n</example>\n\n<example>\nContext: User wants to generate comprehensive architecture documentation for a new team member joining the project.\n\nuser: "We have a new developer starting Monday. I need complete architecture documentation for onboarding."\n\nassistant: "I'm going to use the repo-doc-architect agent to generate a comprehensive architecture.md file that will serve as the primary reference for your new team member."\n\n<commentary>\nThis is a perfect use case for the agent - generating complete architecture documentation from scratch by analyzing the entire codebase structure, dependencies, and patterns.\n</commentary>\n</example>\n\n<example>\nContext: After a sprint of feature development, proactive documentation update is needed.\n\nuser: "Just pushed the last commit for this sprint."\n\nassistant: "Since you've completed a development sprint, let me proactively use the repo-doc-architect agent to ensure your architecture.md and Claude.md are updated with any new patterns, integrations, or analytics that were added during this sprint."\n\n<commentary>\nProactive use case - the agent detects the end of a development cycle and automatically offers to update documentation to prevent drift.\n</commentary>\n</example>\n\n<example>\nContext: User is preparing for a code review and wants to ensure documentation is current.\n\nuser: "I have a code review scheduled for tomorrow. Need to make sure all docs are up to date."\n\nassistant: "I'll use the repo-doc-architect agent to perform a comprehensive documentation audit and update both architecture.md and Claude.md to reflect the current codebase state before your review."\n\n<commentary>\nThe agent will validate existing documentation against the current codebase, identify gaps or outdated information, and generate updated documentation.\n</commentary>\n</example>
+description: |
+  Use this agent when you need to create or update comprehensive repository documentation, analyze codebase architecture, integrate analytics insights, or maintain up-to-date technical documentation. This agent should be used proactively after significant development sessions or when documentation drift is suspected.
+  
+  **Examples:**
+  
+  <example>
+  Context: User has just completed a major refactoring of the service layer and wants to ensure documentation reflects the changes.
+  
+  user: "I just finished refactoring the authentication service and added new monitoring. Can you update the docs?"
+  
+  assistant: "I'll use the Task tool to launch the repo-doc-architect agent to analyze the changes and update both architecture.md and Claude.md with the latest information."
+  
+  <commentary>
+  The user has made significant code changes that need documentation. The repo-doc-architect agent will analyze the new structure, update architecture documentation, and integrate any new analytics/monitoring details into Claude.md.
+  </commentary>
+  </example>
+  
+  <example>
+  Context: User wants to generate comprehensive architecture documentation for a new team member joining the project.
+  
+  user: "We have a new developer starting Monday. I need complete architecture documentation for onboarding."
+  
+  assistant: "I'm going to use the repo-doc-architect agent to generate a comprehensive architecture.md file that will serve as the primary reference for your new team member."
+  
+  <commentary>
+  This is a perfect use case for the agent - generating complete architecture documentation from scratch by analyzing the entire codebase structure, dependencies, and patterns.
+  </commentary>
+  </example>
+  
+  <example>
+  Context: After a sprint of feature development, proactive documentation update is needed.
+  
+  user: "Just pushed the last commit for this sprint."
+  
+  assistant: "Since you've completed a development sprint, let me proactively use the repo-doc-architect agent to ensure your architecture.md and Claude.md are updated with any new patterns, integrations, or analytics that were added during this sprint."
+  
+  <commentary>
+  Proactive use case - the agent detects the end of a development cycle and automatically offers to update documentation to prevent drift.
+  </commentary>
+  </example>
+  
+  <example>
+  Context: User is preparing for a code review and wants to ensure documentation is current.
+  
+  user: "I have a code review scheduled for tomorrow. Need to make sure all docs are up to date."
+  
+  assistant: "I'll use the repo-doc-architect agent to perform a comprehensive documentation audit and update both architecture.md and Claude.md to reflect the current codebase state before your review."
+  
+  <commentary>
+  The agent will validate existing documentation against the current codebase, identify gaps or outdated information, and generate updated documentation.
+  </commentary>
+  </example>
 model: haiku
 color: pink
 ---

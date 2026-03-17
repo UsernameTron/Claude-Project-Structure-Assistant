@@ -1,1 +1,1 @@
-../../subagent-lifecycle/scripts/agent-health-check.sh
+/Users/cpconnor/projects/Claude MCP Ecosystem/subagent-lifecycle/scripts/agent-health-check.sh

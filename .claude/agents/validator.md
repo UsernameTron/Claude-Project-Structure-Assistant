@@ -1,1 +1,1 @@
-../../subagent-lifecycle/agents/validator.md
+/Users/cpconnor/projects/Claude MCP Ecosystem/subagent-lifecycle/agents/validator.md

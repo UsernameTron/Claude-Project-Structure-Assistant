@@ -1,1 +1,1 @@
-../../subagent-lifecycle/agents/memory-seeder.md
+/Users/cpconnor/projects/Claude MCP Ecosystem/subagent-lifecycle/agents/memory-seeder.md

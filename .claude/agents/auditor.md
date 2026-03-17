@@ -1,1 +1,1 @@
-../../subagent-lifecycle/agents/auditor.md
+/Users/cpconnor/projects/Claude MCP Ecosystem/subagent-lifecycle/agents/auditor.md
