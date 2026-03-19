@@ -1,0 +1,6 @@
+{
+  "name": "claude-code-research",
+  "description": "Claude Code research and documentation knowledge base",
+  "version": "1.0.0",
+  "author": { "name": "Pete Connor" }
+}
