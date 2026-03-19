@@ -1,3 +1,13 @@
 {
-  "plugins": ["claude-code-research"]
+  "name": "claude-code-research-marketplace",
+  "owner": {
+    "name": "Pete Connor"
+  },
+  "plugins": [
+    {
+      "name": "claude-code-research",
+      "source": "./",
+      "description": "Claude Code research and documentation knowledge base"
+    }
+  ]
 }
