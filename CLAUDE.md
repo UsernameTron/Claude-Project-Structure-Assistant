@@ -236,6 +236,8 @@ Do not guess silently. If you make an assumption, state it.
 Maintain this structure in the project root:
 
 ```
+commands/                # 12 plugin slash commands (committed)
+skills/                  # Symlinks to subagent-lifecycle/skills/ for plugin discovery
 tasks/                   # Task tracking (committed)
 ├── todo.md              # Current task plan with checkable items
 ├── lessons.md           # Accumulated rules from past corrections
@@ -252,6 +254,8 @@ state/                   # Session audit trail (gitignored)
 ├── session-log.md       # Chronological log of all sessions
 └── decisions.md         # Design decision records
 
+docs/                    # Ecosystem planning and delivery documents (committed)
+├── DEVOPS-HANDOFF.md    # DevOps delivery reference
 plans/                   # Implementation plans from /plan (gitignored)
 outputs/                 # Deliverables and work products (gitignored)
 decisions/               # Architecture Decision Records (committed)
@@ -347,9 +351,11 @@ If a task requires modifying any of these, stop and ask.
 ### Architecture
 - This is a **documentation and agent ecosystem** — not an application. There is no app code, no build step, no runtime.
 - `subagent-lifecycle/` is a self-contained plugin with its own README, plugin.json manifest, agents, skills, templates, and docs. Treat it as a unit.
+- `commands/` contains 12 plugin slash commands (5 workspace + 7 agent management) registered via `.claude-plugin/plugin.json`.
+- `skills/` contains symlinks to `subagent-lifecycle/skills/` for top-level plugin discovery.
 - `.claude/agents/` contains symlinks to `subagent-lifecycle/agents/` (5 pipeline agents) plus one standalone file (`repo-doc-architect.md`).
 - `.claude/scripts/agent-health-check.sh` is a symlink to `subagent-lifecycle/scripts/`.
-- `docs/` holds ecosystem-level planning and specification documents.
+- `docs/` holds ecosystem-level planning, specification documents, and `DEVOPS-HANDOFF.md`.
 - `architecture.md` at root describes the full ecosystem structure and component inventory.
 
 ### Conventions

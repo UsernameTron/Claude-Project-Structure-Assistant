@@ -1,6 +1,6 @@
 # Architecture — Claude MCP Ecosystem
 
-**Last updated:** 2026-03-03T00:00:00Z
+**Last updated:** 2026-03-22T00:00:00Z
 **Version:** 3.0.0
 **Author:** Pete Connor
 **License:** MIT
@@ -22,7 +22,7 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Category | Count | Description |
 |----------|-------|-------------|
 | Skills (Layer 0-1) | 3 | Routing and orchestration in main conversation context |
-| Subagents (Layer 2) | 5 | Isolated worker agents for pipeline execution |
+| Subagents (Layer 2) | 6 | Isolated worker agents for pipeline execution (5) + meta-agent (1) |
 | Templates | 7 | Pre-configured ecosystem blueprints by project type |
 | Reference docs | 15 | Injected knowledge for agent design decisions (3 general + 12 ISPN) |
 | User-facing docs | 3 | Guides for developers, experts, and non-technical users |
@@ -30,7 +30,7 @@ The Claude MCP Ecosystem is a **Subagent Lifecycle Suite** that organizes comple
 | Planning docs | 2 | Architecture improvement plans and deployment specs |
 | Governance | 1 | CLAUDE.md agent operating system |
 | Meta-agents | 1 | repo-doc-architect for documentation generation |
-| Slash commands | 5 | Session lifecycle (/prime, /plan, /build, /status, /wrap) |
+| Slash commands | 12 | Session lifecycle (5) + agent management (7) |
 | Context system | 4 | Operator identity templates (role, org, priorities, metrics) |
 | ADR system | 1 | Architecture Decision Record template |
 
@@ -46,7 +46,31 @@ Claude MCP Ecosystem/
 ├── CLAUDE.md                              # Agent governance & operating rules
 ├── architecture.md                        # Full component inventory & directory map
 │
+├── commands/                              # Plugin slash commands (12 total)
+│   ├── prime.md                           #   Session boot
+│   ├── plan.md                            #   Implementation planning
+│   ├── build.md                           #   Plan execution
+│   ├── status.md                          #   Workspace dashboard
+│   ├── wrap.md                            #   Session close
+│   ├── agents.md                          #   List deployed agents
+│   ├── agent-setup.md                     #   Initial agent deployment
+│   ├── agent-add.md                       #   Add a specialist
+│   ├── agent-remove.md                    #   Remove a specialist
+│   ├── agent-reset.md                     #   Reset agent memory
+│   ├── agent-status.md                    #   Agent health check
+│   └── agent-diagnose.md                  #   Diagnose agent issues
+│
+├── skills/                                # Top-level skill symlinks for plugin discovery
+│   ├── agent-design-patterns → subagent-lifecycle/skills/
+│   ├── frontmatter-reference → subagent-lifecycle/skills/
+│   ├── mcp-catalog → subagent-lifecycle/skills/
+│   ├── project-guide → subagent-lifecycle/skills/
+│   ├── subagent-companion → subagent-lifecycle/skills/
+│   ├── subagent-concierge → subagent-lifecycle/skills/
+│   └── workspace-lifecycle-ref → workspace-ops/skills/
+│
 ├── docs/                                  # Ecosystem-level planning documents
+│   ├── DEVOPS-HANDOFF.md                  #   DevOps delivery reference
 │   ├── Claude_AI_Ecosystem_Deployment_Spec_v2_1.md
 │   └── subagent-suite-improvement-plan-v3.md
 │
@@ -121,7 +145,8 @@ Claude MCP Ecosystem/
     │   ├── auditor.md                     #   Diagnose: ecosystem health checks
     │   ├── memory-seeder.md               #   Seed: populate agent memory files
     │   ├── scaffolder.md                  #   Build: create agent files & config
-    │   └── validator.md                   #   Verify: quality gate & compliance
+    │   ├── validator.md                   #   Verify: quality gate & compliance
+    │   └── repo-doc-architect.md          #   Meta-agent: documentation generation
     │
     ├── docs/                              # User-facing documentation
     │   ├── architecture.md                #   System design reference
@@ -448,7 +473,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `README.md` | Project documentation |
 | `CLAUDE.md` | Governance |
 | `architecture.md` | Technical reference |
-| `docs/` (3 files) | Planning docs + settings reference |
+| `docs/` (4 files) | Planning docs + settings reference + DevOps handoff |
 | `tasks/` (2 files) | Governance tracking |
 | `context/_templates/` (4 files) | Operator identity templates (committed) |
 | `context/*.md` (4 files) | Private operator identity (gitignored) |
@@ -457,7 +482,9 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `outputs/` | Work products (gitignored) |
 | `decisions/` (1 file) | Architecture Decision Records |
 | `.claude/agents/` (5 symlinks + 1 file) | Active agents |
-| `.claude/commands/` (5 files) | Slash commands (/prime, /plan, /build, /status, /wrap) |
+| `commands/` (12 files) | Plugin slash commands (workspace + agent management) |
+| `skills/` (7 symlinks) | Top-level skill symlinks for plugin discovery |
+| `.claude/commands/` (5 files) | Workspace commands (/prime, /plan, /build, /status, /wrap) |
 | `.claude/hooks/` (3 files) | Security + lint hooks + README |
 | `.claude/scripts/` (1 symlink) | Agent health check |
 | `.claude/settings.json` | Project settings (deny rules + hook registration) |
@@ -478,7 +505,7 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | Directory | Files |
 |-----------|-------|
 | `subagent-lifecycle/` (root) | 2 (README.md, plugin.json) |
-| `agents/` | 5 |
+| `agents/` | 6 |
 | `docs/` | 3 |
 | `references/` | 3 |
 | `references/ispn/` | 12 |
@@ -487,4 +514,4 @@ LAYER 2 — WORKERS (subagents, isolated context)
 | `skills/subagent-companion/` | 1 |
 | `skills/subagent-concierge/` | 1 |
 | `templates/` | 7 |
-| **Plugin total** | **36 files** |
+| **Plugin total** | **37 files** |

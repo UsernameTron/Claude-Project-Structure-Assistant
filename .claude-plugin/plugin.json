@@ -1,6 +1,8 @@
 {
-  "name": "claude-code-research",
-  "description": "Claude Code research and documentation knowledge base",
-  "version": "1.0.0",
-  "author": { "name": "Pete Connor" }
+  "name": "claude-mcp-ecosystem",
+  "description": "Project agent ecosystem — set up, manage, and diagnose specialist agents, plus structured workspace commands (/prime, /plan, /build, /status, /wrap)",
+  "version": "2.0.0",
+  "author": { "name": "Pete Connor" },
+  "commands": "../commands/",
+  "skills": "../skills/"
 }

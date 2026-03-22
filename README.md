@@ -67,6 +67,13 @@ You: "help me organize this project"
 | `/build <plan-path>` | Executes a plan with git branches and step-by-step commits |
 | `/status` | Shows a dashboard of plans, sessions, git state, and workspace health |
 | `/wrap` | Closes your session — logs what you did, notes next steps |
+| `/agents` | Lists all deployed specialist agents and their status |
+| `/agent-setup` | Initial agent deployment — scans project, creates specialists |
+| `/agent-add` | Adds a new specialist agent to your project |
+| `/agent-remove` | Removes a specialist agent |
+| `/agent-reset` | Resets a specialist agent's memory |
+| `/agent-status` | Checks health and status of deployed agents |
+| `/agent-diagnose` | Diagnoses issues with specialist agents |
 
 ### Skills (Orchestrators)
 
@@ -422,9 +429,12 @@ Claude MCP Ecosystem/
 ├── architecture.md              # Full technical reference
 ├── .gitignore
 │
+├── commands/                    # 12 slash command definitions for the plugin
+├── skills/                      # Symlinks to subagent-lifecycle/skills/ for plugin discovery
+│
 ├── .claude/
 │   ├── agents/                  # Active agent definitions (5 symlinks + 1 standalone)
-│   ├── commands/                # Slash commands (/prime, /plan, /build, /status, /wrap)
+│   ├── commands/                # Workspace commands (/prime, /plan, /build, /status, /wrap)
 │   ├── hooks/                   # Security and lint hook scripts
 │   ├── scripts/                 # Agent health check (symlinked from plugin)
 │   └── settings.json            # Permissions, deny rules, hook registration
@@ -458,7 +468,8 @@ Claude MCP Ecosystem/
 ├── decisions/                   # Architecture Decision Records (committed)
 │   └── _template.md
 │
-└── docs/                        # Ecosystem-level planning documents
+├── docs/                        # Ecosystem-level planning and handoff documents
+│   └── DEVOPS-HANDOFF.md        # DevOps delivery reference
 ```
 
 ---
@@ -497,6 +508,7 @@ See the [expert guide](subagent-lifecycle/docs/for-experts.md) for full frontmat
 | [Plain-English Guide](subagent-lifecycle/docs/for-vibecoders.md) | Beginners | How specialists work without any technical jargon |
 | [Expert Guide](subagent-lifecycle/docs/for-experts.md) | Power users | All frontmatter fields, manual configuration, advanced patterns |
 | [Plugin Architecture](subagent-lifecycle/docs/architecture.md) | Developers | Internal pipeline design and component relationships |
+| [DevOps Handoff](docs/DEVOPS-HANDOFF.md) | DevOps / Ops | Environment, configuration, security, known tech debt |
 
 ---
 
