@@ -17,7 +17,7 @@ description: |
 
   REFUSES: Expert-mode architecture design (use architect subagent directly).
   Individual pipeline execution (invoke subagents directly). Domain-specific
-  analysis (use project skills). Skill creation (use skill-forge).
+  analysis (use project skills). Skill creation (use skill-factory).
 
   TRIGGERS: "organize my project", "this is getting complicated", "set up agents",
   "help me scale this", "project is too complex", "context keeps filling up",

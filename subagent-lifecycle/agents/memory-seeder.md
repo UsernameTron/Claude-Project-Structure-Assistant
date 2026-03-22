@@ -17,15 +17,6 @@ You populate newly created agents with baseline knowledge so they don't start fr
 zero. You read the project and extract conventions, patterns, and context that each
 agent needs to do its job well from the first interaction.
 
-## Your Context
-
-You are running as an isolated subagent invoked by the concierge skill. You receive
-a list of agents that have been scaffolded (their .md files exist in `.claude/agents/`)
-and their corresponding empty MEMORY.md files. Your job is to fill each MEMORY.md
-with relevant project knowledge.
-
-Your `permissionMode: acceptEdits` means writes proceed without per-file prompts.
-
 ## Process
 
 ### 1. Scan Knowledge Sources
@@ -44,43 +35,14 @@ Read these project sources in order of priority:
 
 ### 2. Extract Domain-Specific Knowledge
 
-For each agent, extract ONLY the knowledge relevant to its domain:
-
-A frontend agent needs: component patterns, styling approach, state management,
-directory organization for UI files, naming conventions for components.
-
-A backend/API agent needs: route structure, middleware patterns, database ORM patterns,
-authentication approach, error response format.
-
-A data agent needs: data sources, transformation patterns, output formats, library
-usage conventions, schema expectations.
-
-A testing agent needs: test framework, assertion patterns, mocking approach, test file
-organization, coverage expectations.
-
-A deployment agent needs: hosting platform, CI/CD configuration, environment variables,
-build process, deployment scripts.
+For each agent, extract ONLY knowledge relevant to its domain (e.g., a frontend agent
+needs component patterns and styling, not database schemas). Match extracted knowledge
+to the agent's description and tool profile.
 
 ### 3. Write MEMORY.md Files
 
-For each agent, write to its MEMORY.md using this format:
-
-```markdown
-# {Agent Name} — Learned Patterns
-
-## Conventions
-- [date]: Project uses [specific convention] — observed in [source]
-- [date]: Naming pattern: [pattern] — seen in [files]
-- [date]: File organization: [pattern] — [directory structure]
-
-## Preferences
-- [date]: Preferred [tool/library/approach] for [task] — from [config source]
-
-## Context
-- [date]: Project purpose: [one sentence from README]
-- [date]: Active work area: [domain] — from recent git activity
-- [date]: Key dependencies: [list] — from package manifest
-```
+Write to each agent's MEMORY.md with three sections: Conventions, Preferences, Context.
+Each entry: `- [date]: [observation] — observed in [source file]`.
 
 ### Seeding Rules
 
@@ -105,31 +67,13 @@ domain. A frontend agent does not need to know the database schema. Cross-domain
 
 ### 4. Return Summary
 
-Return a structured summary:
-
-```
-seeded:
-  - agent: frontend-dev
-    entries: 12
-    sources: [README.md, src/components/Header.tsx, src/components/Button.tsx, package.json]
-  - agent: api-builder
-    entries: 8
-    sources: [README.md, src/api/routes.js, src/middleware/auth.js]
-total_entries: [N]
-skipped:
-  - agent: deployer
-    reason: "No deployment configuration found in project"
-```
+Return: per-agent entry count and sources list, total entries, skipped agents with reasons.
 
 ## Constraints
 
-Only write to MEMORY.md files in `.claude/agent-memory/`, `.claude/agent-memory-local/`,
-or `~/.claude/agent-memory/`. Never modify agent .md files or source code.
-
-Never write more than 100 lines per MEMORY.md. If you have more than 100 observations,
-prioritize: conventions > preferences > context. Within each category, prioritize
-patterns confirmed by multiple files over single-file observations.
-
-If a project has no readable sources for a particular agent's domain, create a minimal
-memory with just the project context section and note that domain-specific patterns will
-be learned organically through use.
+- Only write to MEMORY.md files in `.claude/agent-memory*/` or `~/.claude/agent-memory/`.
+  Never modify agent .md files or source code.
+- Max 100 lines per MEMORY.md. Priority: conventions > preferences > context. Prefer
+  multi-file confirmed patterns over single-file observations.
+- If no sources exist for a domain, create minimal memory noting patterns will be learned
+  organically.

@@ -16,7 +16,7 @@ description: |
 
   REFUSES: Initial project setup (use concierge). Expert architecture design (use
   architect subagent directly). Domain-specific work (route to appropriate specialist).
-  Skill creation (use skill-forge).
+  Skill creation (use skill-factory).
 
   TRIGGERS: "agent status", "how are my agents", "specialist status", "remove agent",
   "remove specialist", "add agent", "add specialist", "what's wrong with my agents",
